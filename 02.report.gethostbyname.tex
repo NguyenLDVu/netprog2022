@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+
+\begin{document}
+\pagenumbering{Roman}
+
+
+\begin{titlepage}
+    \title{\textbf{\LARGE{Practical Work 2}}}
+    \author{\LARGE{Nguyen Le Dinh Vu - Bi11-291 }}
+    \date{May 28 2022}
+    
+\end{titlepage}
+\newpage
+
+\maketitle
+
+\section{Get domain name}
+Firstly, I declare a char array of length 200 to store the domain name.
+\begin{verbatim}
+    char input[200];
+\end{verbatim}
+
+\subsection{Get domain name from user input}
+I ask user to input the domain name into the program
+\begin{verbatim}
+    printf("Enter host domain name: ");
+    scanf("%s", input);
+\end{verbatim}
+
+
+\section{Resolve domain name}
+By using the function "gethostbyname()", we can resolve the "domain".
+
+\subsection{Cannot find host address}
+If we obtain a wrong hostname, we can not find the address of the corresponding hostname.
+\begin{verbatim}
+    if (host == NULL ) {
+        printf("Cannot find host address \n");
+        exit(1);
+    }
+\end{verbatim}
+\subsection{Get the hostname address successfully}
+We get a pointer to "struct hostent", we make a loop through address list, by using "inet ntoa" we convert the addresses to char and then print it down
+\begin{verbatim}
+     for ( int i = 0; host->h_addr_list[i] != NULL; i++ ){
+        	address = (struct in_addr *)(host->h_addr_list[i]);
+        	printf("Address : %s \n", inet_ntoa(*address));
+\end{verbatim}
+\section{Demonstration}
+\subsection{Run program on my laptop}
+\begin{verbatim}
+> vu@ubuntu:~$ ./a.out
+Enter host domain name: www.stackoverflow.com
+Address : 151.101.65.69 
+Address : 151.101.1.69 
+Address : 151.101.129.69 
+Address : 151.101.193.69 
+
+> vu@ubuntu:~$ ./a.out 
+Enter host domain name: www.facebook.com
+Address : 157.240.211.35 
+
+
+> vu@ubuntu:~$ ./a.out 
+Enter host domain name: test
+Cannot find host address 
+
+\end{verbatim}
+\subsection{Run program on my VPS}
+\begin{verbatim}
+> root@VuVps:~/netprog2022# ./a.out 
+Enter host domain name: www.stackoverflow.com
+Address : 151.101.1.69 
+Address : 151.101.65.69 
+Address : 151.101.193.69 
+Address : 151.101.129.69 
+
+> root@VuVps:~/netprog2022# ./a.out 
+Enter host domain name: www.facebook.com
+Address : 157.240.15.35 
+
+
+> root@VuVps:~/netprog2022# ./a.out 
+Enter host domain name: test    
+Cannot find host address 
+\end{verbatim}
+
+In my demostration, there is a different between the resolved IP address of facebook on my laptop ("157.240.211.35 ") and on my VPS ("157.240.15.35"). The reason is one domain name can map to multiple IP addresses and the difference in region can lead to different mapping.
+
+
+\end{document}
