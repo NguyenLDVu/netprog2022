@@ -21,7 +21,8 @@ int main(){
     
     struct in_addr *address;
     printf("Enter host domain name: ");
-    scanf("%s", input);
+    fgets(input, 200, stdin);
+    input[strlen(input) - 1] = '\0';
 
     if ((h=gethostbyname(input)) == NULL) {
         printf("Unknown host \n");
