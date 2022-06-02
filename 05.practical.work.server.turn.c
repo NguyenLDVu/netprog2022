@@ -50,9 +50,9 @@ int main(){
         printf("Client: %s \n", clientms);
 
         printf("Messages to client: ");
-        scanf("%s",svms);
+        fgets( svms, 1000, stdin);
 
-        if (send(clientfd, svms, sizeof(svms), 0)<0){
+        if (send(clientfd, svms, strlen(svms)+1, 0)<0){
             printf("Can not send to client \n");
         }    
     }
