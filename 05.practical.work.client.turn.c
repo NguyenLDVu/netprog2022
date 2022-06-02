@@ -40,10 +40,11 @@ int main(){
     printf("Connected to server successfully \n");
     
     while (1){
+
         printf("Messages to server: ");
         scanf("%s",clientms);
 
-        if (send(sockfd, clientms, sizeof(clientms), 0)<0){
+        if (send(sockfd, clientms, strlen(clientms)+1, 0)<0){
             printf("Can not send to server \n");
         }
 
@@ -53,6 +54,7 @@ int main(){
 
         printf("Server: %s \n", svms);
     }
+
 
     return 0;
 }
