@@ -15,7 +15,6 @@ int main(){
     unsigned short port = 8784;
     char clientms[1000], svms[1000];
 
-
     if ((sockfd=socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         printf("Error creating socket \n");
         return 1;
@@ -47,9 +46,8 @@ int main(){
 
         do{
             fgets(clientms, 1000, stdin);
-            if (strcmp(clientms,"/quit\n\0")==0){
+            if (strcmp(clientms,"/quit\n")==0){
                 send(sockfd, clientms, strlen(clientms) + 1, 0);
-                shutdown(sockfd,SHUT_RDWR);
                 close(sockfd);
                 printf("Client disconnected \n");
                 return 0;
@@ -57,16 +55,17 @@ int main(){
             send(sockfd, clientms, strlen(clientms) + 1, 0);
         } while (clientms[strlen(clientms) - 1] != '\n');
         
-
         printf("Server: ");
 
         do{
             recv(sockfd, svms, sizeof(svms), 0);
+            if (strcmp(svms,"/dc\n")==0){
+                close(sockfd);
+                printf("Server disconected\n");
+                return 0;
+            }
             printf("%s", svms);
         } while (svms[strlen(svms) - 1] != '\n');
-        
     }
-
-
     return 0;
 }
